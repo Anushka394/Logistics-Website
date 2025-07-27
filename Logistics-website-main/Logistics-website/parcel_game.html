@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plane Adventure Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+        
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #1e90ff, #87CEEB);
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+        }
+        canvas {
+            display: none;
+        }
+        #startScreen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background: linear-gradient(to bottom, #1e90ff, #87CEEB);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        #gameTitle {
+            color: white;
+            font-size: 52px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            animation: floatAnimation 3s ease-in-out infinite;
+        }
+        #startButton {
+            padding: 15px 40px;
+            font-size: 24px;
+            border: none;
+            background: #FF4500;
+            color: white;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+        }
+        #startButton:hover {
+            background: #FF6347;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.4);
+        }
+        #startButton:active {
+            transform: translateY(2px);
+        }
+        #startButton::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        #startButton:hover::after {
+            animation: ripple 1s ease-out;
+        }
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        #instructions {
+            color: white;
+            font-size: 18px;
+            margin-top: 40px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            line-height: 1.5;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+        .key {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 3px 10px;
+            border-radius: 5px;
+            margin: 0 5px;
+            font-weight: bold;
+        }
+        #gamePlane {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            background-color: red;
+            clip-path: polygon(0% 50%, 20% 0%, 100% 30%, 100% 70%, 20% 100%);
+            animation: flyPlane 15s linear infinite;
+            z-index: 10;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes floatAnimation {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+        @keyframes flyPlane {
+            0% { left: -100px; top: 20%; }
+            20% { left: 20%; top: 30%; }
+            40% { left: 40%; top: 15%; }
+            60% { left: 60%; top: 25%; }
+            80% { left: 80%; top: 40%; }
+            100% { left: 110%; top: 30%; }
+        }
+        @keyframes floatCloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100vw); }
+        }
+        
+        #scoreboard {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        #gameOverMessage {
+            display: none;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+        #giftBox {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background-color: #FF4500;
+            border: 5px solid gold;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+            animation: pulse 1.5s infinite alternate;
+        }
+        #giftBox:before {
+            content: "🎁";
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #rewardMessage {
+            display: none;
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+        #restartButton {
+            display: none;
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            font-size: 20px;
+            border: none;
+            background: #1e90ff;
+            color: white;
+            cursor: pointer;
+            border-radius: 50px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        #restartButton:hover {
+            background: #4169E1;
+            transform: translateX(-50%) translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div id="startScreen">
+        <div id="gamePlane"></div>
+        <h1 id="gameTitle">Plane Adventure</h1>
+        <button id="startButton">START FLYING</button>
+        <div id="instructions">
+            Press <span class="key">↑</span> to fly upward and avoid obstacles.
+            Collect yellow fuel orbs to keep your plane in the air.
+            How far can you go?
+        </div>
+    </div>
+    <div id="scoreboard">Score: 0 | Fuel: 100%</div>
+    <canvas id="gameCanvas"></canvas>
+    <div id="gameOverMessage"></div>
+    <div id="giftBox"></div>
+    <div id="rewardMessage"></div>
+    <button id="restartButton">Play Again</button>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const startScreen = document.getElementById("startScreen");
+        const startButton = document.getElementById("startButton");
+        const scoreboard = document.getElementById("scoreboard");
+        const gameOverMessage = document.getElementById("gameOverMessage");
+        const giftBox = document.getElementById("giftBox");
+        const rewardMessage = document.getElementById("rewardMessage");
+        const restartButton = document.getElementById("restartButton");
+
+        // Create animated clouds for the start screen
+        function createClouds() {
+            const cloudCount = 10;
+            for (let i = 0; i < cloudCount; i++) {
+                createCloud();
+            }
+        }
+
+        function createCloud() {
+            const cloud = document.createElement('div');
+            cloud.classList.add('cloud');
+            
+            // Random cloud properties
+            const size = Math.random() * 100 + 50;
+            const top = Math.random() * window.innerHeight * 0.8;
+            const left = Math.random() * window.innerWidth;
+            const duration = Math.random() * 60 + 60;
+            const delay = Math.random() * 30;
+            
+            cloud.style.width = `${size}px`;
+            cloud.style.height = `${size * 0.6}px`;
+            cloud.style.top = `${top}px`;
+            cloud.style.left = `${left}px`;
+            cloud.style.animation = `floatCloud ${duration}s linear ${delay}s infinite`;
+            
+            startScreen.appendChild(cloud);
+        }
+
+        // Call cloud creation on load
+        createClouds();
+
+        let plane, obstacles, fuels, score, fuel, gameRunning;
+        let gravity = 0.5;
+        let lift = -8;
+        let obstacleSpeed = 5;
+        let fuelDepletionRate = 0.05;
+
+        function initGame() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            plane = { x: 100, y: canvas.height / 2, width: 50, height: 30, speed: 0 };
+            obstacles = [];
+            fuels = [];
+            score = 0;
+            fuel = 100;
+            gameRunning = true;
+
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "ArrowUp") plane.speed = lift;
+            });
+
+            gameLoop();
+        }
+
+        function generateObstacles() {
+            if (Math.random() < 0.02) {
+                let height = Math.random() * 100 + 30;
+                let yPos = Math.random() * (canvas.height - height);
+                obstacles.push({ x: canvas.width, y: yPos, width: 40, height: height });
+                
+                if (Math.random() < 0.5) {
+                    fuels.push({ x: canvas.width, y: yPos + height + 20, radius: 10 });
+                }
+            }
+        }
+
+        function drawObstacles() {
+            ctx.fillStyle = "black";
+            obstacles.forEach(obstacle => {
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            });
+        }
+
+        function drawFuels() {
+            ctx.fillStyle = "yellow";
+            fuels.forEach(fuel => {
+                ctx.beginPath();
+                ctx.arc(fuel.x, fuel.y, fuel.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function updateObstacles() {
+            obstacles.forEach(obstacle => obstacle.x -= obstacleSpeed);
+            obstacles = obstacles.filter(obstacle => obstacle.x + obstacle.width > 0);
+        }
+
+        function updateFuels() {
+            fuels.forEach(fuel => fuel.x -= obstacleSpeed);
+            fuels = fuels.filter(fuel => fuel.x + fuel.radius > 0);
+        }
+
+        function detectCollision() {
+            for (let obstacle of obstacles) {
+                if (
+                    plane.x < obstacle.x + obstacle.width &&
+                    plane.x + plane.width > obstacle.x &&
+                    plane.y < obstacle.y + obstacle.height &&
+                    plane.y + plane.height > obstacle.y
+                ) {
+                    endGame("You hit an obstacle!");
+                    return;
+                }
+            }
+            
+            fuels = fuels.filter(fuelItem => {
+                if (
+                    plane.x < fuelItem.x + fuelItem.radius &&
+                    plane.x + plane.width > fuelItem.x - fuelItem.radius &&
+                    plane.y < fuelItem.y + fuelItem.radius &&
+                    plane.y + plane.height > fuelItem.y - fuelItem.radius
+                ) {
+                    fuel = Math.min(100, fuel + 10);
+                    return false;
+                }
+                return true;
+            });
+            
+            if (plane.y + plane.height >= canvas.height || plane.y <= 0) {
+                endGame("You crashed!");
+                return;
+            }
+            
+            if (fuel <= 0) {
+                endGame("Out of fuel!");
+                return;
+            }
+        }
+
+        function gameLoop() {
+            if (!gameRunning) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw sky background gradient
+            const skyGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            skyGradient.addColorStop(0, "#1e90ff");
+            skyGradient.addColorStop(1, "#87CEEB");
+            ctx.fillStyle = skyGradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            plane.y += plane.speed;
+            plane.speed += gravity;
+            fuel -= fuelDepletionRate;
+
+            generateObstacles();
+            updateObstacles();
+            updateFuels();
+            detectCollision();
+            
+            // Draw plane with a better shape
+            ctx.fillStyle = "red";
+            ctx.beginPath();
+            ctx.moveTo(plane.x, plane.y + plane.height/2);
+            ctx.lineTo(plane.x + plane.width * 0.2, plane.y);
+            ctx.lineTo(plane.x + plane.width, plane.y + plane.height * 0.3);
+            ctx.lineTo(plane.x + plane.width, plane.y + plane.height * 0.7);
+            ctx.lineTo(plane.x + plane.width * 0.2, plane.y + plane.height);
+            ctx.closePath();
+            ctx.fill();
+            
+            drawObstacles();
+            drawFuels();
+            
+            score++;
+            scoreboard.innerText = `Score: ${score} | Fuel: ${fuel.toFixed(1)}%`;
+            requestAnimationFrame(gameLoop);
+        }
+
+        function endGame(message) {
+            gameRunning = false;
+            gameOverMessage.textContent = message;
+            gameOverMessage.style.display = "block";
+            
+            // Show gift box after 1 second
+            setTimeout(() => {
+                giftBox.style.display = "block";
+                restartButton.style.display = "block";
+            }, 1000);
+        }
+        
+        function getRandomReward() {
+            const rewards = [
+                "1% Discount",
+                "3% Discount",
+                "5% Discount",
+                "7% Discount",
+                "1-Day Free Premium Subscription",
+                "3-Day Free Premium Subscription"
+            ];
+            
+            return rewards[Math.floor(Math.random() * rewards.length)];
+        }
+
+        startButton.addEventListener("click", function () {
+            startScreen.style.display = "none";
+            canvas.style.display = "block";
+            scoreboard.style.display = "block";
+            initGame();
+        });
+        
+        giftBox.addEventListener("click", function() {
+            const reward = getRandomReward();
+            rewardMessage.textContent = `Congratulations! You won: ${reward}`;
+            rewardMessage.style.display = "block";
+            giftBox.style.display = "none";
+        });
+        
+        restartButton.addEventListener("click", function() {
+            // Hide all game over elements
+            gameOverMessage.style.display = "none";
+            giftBox.style.display = "none";
+            rewardMessage.style.display = "none";
+            restartButton.style.display = "none";
+            
+            // Restart the game
+            initGame();
+        });
+    </script>
+</body>
+</html>

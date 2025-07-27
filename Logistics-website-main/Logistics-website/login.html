@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PIVAS Logistics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .login-container, .calculator-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+        }
+
+        .login-container h2, .calculator-container h2 {
+            margin-bottom: 20px;
+            color: #1E3A5F;
+            font-size: 24px;
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #1E3A5F;
+        }
+
+        .btn {
+            background: #1E3A5F;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #163250;
+        }
+
+        .forgot-password {
+            display: block;
+            margin-top: 10px;
+            color: #3A6EA5;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="login-container">
+            <h2>Login to PIVAS</h2>
+            <div class="input-group">
+                <input type="text" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Password" required>
+            </div>
+            <button class="btn" onclick="redirectToTrack()">Login</button>
+            <a href="#" class="forgot-password">Forgot Password?</a>
+        </div>
+
+        <div class="calculator-container">
+            <h2>Cost & Time Calculator</h2>
+            <button class="btn" onclick="redirectToCalculator()">Calculate Now</button>
+        </div>
+    </div>
+
+    <script>
+        function redirectToTrack() {
+            window.location.href = "track.html";
+        }
+        
+        function redirectToCalculator() {
+            window.location.href = "time_calculator.html";
+        }
+    </script>
+
+</body>
+</html>

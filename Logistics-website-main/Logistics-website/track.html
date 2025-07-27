@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Parcel - PIVAS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .tracking-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        .tracking-container h1 {
+            color: #1E3A5F;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #1E3A5F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #FFD700;
+            color: #1E3A5F;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+            display: none;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .parcel-image {
+            width: 100%;
+            max-width: 300px;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .delivery-time {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1E3A5F;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="tracking-container">
+        <h1>Track Your Parcel</h1>
+        <form id="tracking-form">
+            <div class="input-group">
+                <label for="tracking-id">Tracking ID</label>
+                <input type="text" id="tracking-id" name="tracking-id" required>
+            </div>
+            <div class="input-group">
+                <label for="reference-no">Reference Number</label>
+                <input type="text" id="reference-no" name="reference-no" required>
+            </div>
+            <button type="submit" class="btn">Track Parcel</button>
+        </form>
+        
+        <button onclick="location.href='real_time.html'" class="btn">Get Real-Time Updates</button>
+
+        <div class="map-container" id="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387190.2799149056!2d-74.2598658784775!3d40.69714940431512!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c250b4cbd1840d%3A0x8ef79d0a0ff8dd9a!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sin!4v1710101010101" 
+                allowfullscreen="" loading="lazy">
+            </iframe>
+        </div>
+
+        <img src="parcel-image.jpeg" alt="Parcel Image" class="parcel-image" id="parcel-image">
+        
+        <div class="delivery-time" id="delivery-time">Estimated delivery time: 2 hours 30 minutes</div>
+    </div>
+
+    <script>
+        document.getElementById("tracking-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            document.getElementById("map-container").style.display = "block";
+            document.getElementById("parcel-image").style.display = "block";
+            document.getElementById("delivery-time").style.display = "block";
+        });
+    </script>
+</body>
+</html>

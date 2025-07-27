@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Tracking | Softlink</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .tracking-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .tracking-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .tracking-header h1 {
+            color: #2c3e50;
+        }
+        .tracking-form {
+            display: flex;
+            gap: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .tracking-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .tracking-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .tracking-results {
+            display: none;
+            margin-top: 20px;
+        }
+        .progress-tracker {
+            margin: 40px 0;
+        }
+        .progress-line {
+            height: 4px;
+            background-color: #e0e0e0;
+            width: 100%;
+        }
+        .progress-filled {
+            height: 100%;
+            background-color: #27ae60;
+            width: 0%;
+            transition: width 1s;
+        }
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: -10px;
+        }
+        .step {
+            text-align: center;
+        }
+        .step-dot {
+            width: 20px;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .step.active .step-dot {
+            background-color: #3498db;
+        }
+        .step.completed .step-dot {
+            background-color: #27ae60;
+        }
+        .step-label {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .alert {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+            display: none;
+        }
+        #download-pdf, #fix-issue {
+            display: none;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #compliant-message {
+            display: none;
+            color: #27ae60;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .fix-section {
+            display: none;
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #f39c12;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        .fix-section p {
+            margin: 0;
+            font-size: 15px;
+            color: #7f8c8d;
+        }
+        .upload-form {
+            display: none;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .upload-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="tracking-container">
+            <div class="tracking-header">
+                <h1>Real-Time Shipment Tracking</h1>
+                <p>Enter your tracking number to check shipment compliance and status</p>
+            </div>
+
+            <div class="tracking-form">
+                <input type="text" class="tracking-input" placeholder="Enter tracking number" id="tracking-number">
+                <button class="tracking-btn" onclick="trackShipment()">Track Now</button>
+            </div>
+
+            <div class="alert" id="alert-message"></div>
+
+            <div class="tracking-results" id="tracking-results">
+                <div class="progress-tracker">
+                    <div class="progress-line">
+                        <div class="progress-filled" id="progress-bar"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <div class="step completed"><div class="step-dot"></div><div class="step-label">Order Placed</div></div>
+                        <div class="step completed"><div class="step-dot"></div><div class="step-label">Processing</div></div>
+                        <div class="step" id="compliant-step"><div class="step-dot"></div><div class="step-label">Compliant</div></div>
+                        <div class="step" id="in-transit"><div class="step-dot"></div><div class="step-label">In Transit</div></div>
+                        <div class="step"><div class="step-dot"></div><div class="step-label">Out for Delivery</div></div>
+                        <div class="step"><div class="step-dot"></div><div class="step-label">Delivered</div></div>
+                    </div>
+                </div>
+
+                <div id="compliant-message">✅ This shipment is compliant. Processing will continue.</div>
+
+                <button id="download-pdf" onclick="downloadPDF()">📄 Download Compliance Report</button>
+
+                <div class="fix-section" id="fix-section">
+                    <p id="fix-message"></p>
+                    <div class="upload-form" id="upload-form">
+                        <input type="file" class="upload-input" id="file-upload">
+                        <button id="fix-issue" onclick="submitFix()">Attach Form</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function trackShipment() {
+            const declaredValue = Math.random() * 2000;
+            const hasRestrictedItem = Math.random() < 0.3;
+            const valueLimit = 1000;
+
+            const trackingResults = document.getElementById('tracking-results');
+            const alertMessage = document.getElementById('alert-message');
+            const compliantMessage = document.getElementById('compliant-message');
+            const fixSection = document.getElementById('fix-section');
+            const uploadForm = document.getElementById('upload-form');
+            const progressBar = document.getElementById('progress-bar');
+            const downloadPdf = document.getElementById('download-pdf');
+
+            trackingResults.style.display = 'block';
+            alertMessage.style.display = 'none';
+            compliantMessage.style.display = 'none';
+            fixSection.style.display = 'none';
+            uploadForm.style.display = 'none';
+            downloadPdf.style.display = 'none';
+
+            if (declaredValue > valueLimit || hasRestrictedItem) {
+                let reason = "";
+                if (declaredValue > valueLimit) {
+                    reason += "Value exceeds limit — attach additional form.";
+                    uploadForm.style.display = 'flex';
+                }
+                if (hasRestrictedItem) {
+                    reason += " Restricted item detected — contact support.";
+                }
+                alertMessage.innerText = "❌ Parcel flagged! " + reason;
+                alertMessage.style.display = 'block';
+                fixSection.style.display = 'block';
+                downloadPdf.style.display = 'block';
+                progressBar.style.width = '33%';
+            } else {
+                progressBar.style.width = '66%';
+                document.getElementById('compliant-step').classList.add('completed');
+                document.getElementById('in-transit').classList.add('active');
+                compliantMessage.style.display = 'block';
+            }
+        }
+
+        function downloadPDF() {
+            // Redirect to report.html instead of showing an alert
+            window.location.href = "report.html";
+        }
+        
+        function submitFix() {
+            // Placeholder for form submission functionality
+            alert("Form attached successfully. Processing will continue.");
+        }
+    </script>
+
+</body>
+</html>

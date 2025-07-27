@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIVAS Logistics - Home</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #F4F6F9;
+            color: #333;
+            padding-top: 70px; /* Added padding to prevent content overlap with fixed navbar */
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(30, 58, 95, 0.95); /* Slightly more opaque for better readability */
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Added shadow for better visibility */
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFD700;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 50px;
+            vertical-align: middle;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin: 0 15px;
+        }
+
+        /* Fixed the hover effect for nav links */
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 8px 15px;
+            transition: 0.3s;
+            border-radius: 5px; /* Added border-radius here for consistency */
+            display: inline-block; /* Ensures the link only takes necessary space */
+        }
+
+        .nav-links a:hover {
+            background: #FFD700;
+            color: #1E3A5F;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            background: url('logistics-background.jpg') no-repeat center center / cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            margin-top: -70px; /* Offset the body padding to make hero full height */
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay for readability */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            color: #FFD700;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Company Info */
+        .company-info {
+            padding: 80px 50px;
+            background: white;
+            text-align: center;
+            color: #1E3A5F;
+        }
+
+        .info-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .info-container img {
+            width: 45%;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .info-text {
+            max-width: 45%;
+            text-align: left;
+        }
+
+        .info-text h2 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 30px;
+        }
+
+        .info-text p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #1E3A5F;
+            color: white;
+            font-size: 18px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px; /* Reduced padding for mobile */
+            }
+            
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: #1E3A5F;
+                position: absolute;
+                top: 70px; /* Adjusted to match navbar height */
+                left: 0; /* Changed from right to left for full-width menu */
+                width: 100%;
+                padding: 10px 0;
+                border-radius: 0 0 5px 5px;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 10px 0;
+                text-align: center;
+                width: 100%; /* Ensure li takes full width */
+            }
+            
+            .nav-links a {
+                display: block;
+                padding: 10px;
+                width: 100%;
+                text-align: center;
+                border-radius: 0; /* Remove border radius for mobile menu items */
+            }
+
+            .nav-links a:hover {
+                border-radius: 0; /* Ensure no rounded corners on mobile */
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .info-container {
+                flex-direction: column;
+            }
+
+            .info-container img, .info-text {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .hero-content h1 {
+                font-size: 3rem; /* Smaller font for mobile */
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo.jpg" alt="PIVAS Logistics Logo" height="50">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html">Customer Login</a></li>
+                <li><a href="admin.html">Admin Dashboard</a></li>
+                <li><a href="subscription.html">Subscription</a></li>
+                <li><a href="flag.html">Parcel Compliance Checker</a></li>
+                <li><a href="about_us.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="support.html">Support</a></li>
+                <li><a href="parcel_game.html">Let's Play</a></li>
+            </ul>
+            <div class="menu-toggle">&#9776;</div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>PIVAS</h1>
+            <p>Parcel Inspection and Validation Analysis System</p>
+        </div>
+    </section>
+
+    <!-- Company Info -->
+    <section class="company-info">
+        <div class="info-container">
+            <img src="logistics-image.jpg" alt="PIVAS Logistics">
+            <div class="info-text">
+                <h2>About PIVAS Logistics</h2>
+                <p>PIVAS Logistics is a leader in innovative parcel inspection, validation, and delivery solutions. 
+                   We specialize in <strong>secure, efficient, and technology-driven</strong> logistics, ensuring timely and 
+                   <strong>hassle-free</strong> shipping experiences. Our mission is to <strong>revolutionize</strong> supply chains 
+                   with cutting-edge AI and automation, making every delivery <strong>safer and more reliable.</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 PIVAS Logistics | Powered by Innovation</p>
+    </footer>
+
+    <!-- JavaScript for mobile menu toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            menuToggle.addEventListener('click', function(event) {
+                event.stopPropagation(); // Prevent click from propagating
+                navLinks.classList.toggle('active');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInsideNavbar = event.target.closest('.navbar');
+                if (!isClickInsideNavbar && navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+            
+            // Close menu when clicking a link
+            const navItems = document.querySelectorAll('.nav-links a');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navLinks.classList.remove('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

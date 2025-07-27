@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Report | Softlink</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .details {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+        }
+        .details p {
+            margin: 10px 0;
+        }
+        strong {
+            color: #2c3e50;
+        }
+        .flag-reason {
+            padding: 15px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .solution {
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .upload-section {
+            padding: 15px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            text-align: center;
+            background-color: #ecf0f1;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #219653;
+        }
+        #download-pdf {
+            background-color: #e67e22;
+        }
+        #download-pdf:hover {
+            background-color: #d35400;
+        }
+        .contact-section {
+            padding: 20px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .contact-section p {
+            margin: 10px 0;
+            font-size: 1rem;
+            color: #2c3e50;
+        }
+        .contact-section a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact-section a:hover {
+            text-decoration: underline;
+        }
+        /* Hide elements that shouldn't appear in the PDF */
+        .no-print {
+            display: block;
+        }
+        /* Print-specific styles */
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="full-report">
+        <h1>Compliance Report</h1>
+        <div class="details">
+            <h2>Shipment Details</h2>
+            <p><strong>Tracking Number:</strong> TRK56789</p>
+            <p><strong>Shipment ID:</strong> SHIP20250305</p>
+            <p><strong>Item Name:</strong> Lithium Battery Pack</p>
+            <p><strong>Item Value:</strong> $1800 USD</p>
+            <p><strong>Item Weight:</strong> 110 kg</p>
+            <p><strong>Destination Country:</strong> Canada</p>
+            <p class="flag-reason">Reason: Item value exceeds $1500 USD and item is on the restricted list for Canada.</p>
+        </div>
+
+        <h2>How to Fix the Issue</h2>
+        
+        <div class="solution">
+            <p>If the item value exceeds the allowed limit, please upload the additional form for customs clearance.</p>
+        </div>
+
+        <div class="upload-section no-print">
+            <label for="form-upload"><strong>Upload Additional Form (PDF):</strong></label>
+            <input type="file" id="form-upload" accept="application/pdf">
+            <button onclick="submitForm()">Submit Form</button>
+        </div>
+
+        <p>For restricted items, please <strong>contact support</strong> using the details below.</p>
+
+        <button id="download-pdf" class="no-print" onclick="generatePDF()">Download Compliance Report</button>
+
+        <!-- Contact Section -->
+        <div class="contact-section">
+            <h2>Contact Support</h2>
+            <p><strong>Email:</strong> <a href="mailto:support@softlink.com">support@softlink.com</a></p>
+            <p><strong>Phone:</strong> +1-800-456-7890</p>
+            <p><strong>Live Chat:</strong> <a href="#">Start a Live Chat</a></p>
+        </div>
+    </div>
+
+    <script>
+        // PDF Generator
+        function generatePDF() {
+            // Options for PDF generation
+            const options = {
+                margin: 10,
+                filename: 'Compliance_Report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Clone the report container to modify it for PDF generation
+            const reportContent = document.querySelector('#full-report');
+            
+            // Use html2pdf with the full report content
+            html2pdf().set(options).from(reportContent).save();
+        }
+
+        // Simulate form submission
+        function submitForm() {
+            const fileInput = document.getElementById('form-upload');
+            if (fileInput.files.length === 0) {
+                alert('Please upload a form before submitting.');
+                return;
+            }
+            alert('Form submitted successfully. Our team will review and get back to you.');
+        }
+    </script>
+
+</body>
+</html>

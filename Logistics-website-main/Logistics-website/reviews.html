@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Testimonials | Softlink</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .testimonials-container {
+            padding: 50px 0;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .section-header h2 {
+            color: #2c3e50;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        .section-header p {
+            color: #7f8c8d;
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .tab-btn {
+            padding: 12px 24px;
+            background-color: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        .tab-btn.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .testimonial-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        .quote-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #edf2f7;
+            font-size: 60px;
+            z-index: 0;
+        }
+        .testimonial-rating {
+            color: #f39c12;
+            font-size: 20px;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .testimonial-text {
+            font-style: italic;
+            color: #4a5568;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e2e8f0;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .author-info {
+            flex: 1;
+        }
+        .author-name {
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 3px;
+        }
+        .author-company {
+            color: #718096;
+            font-size: 14px;
+        }
+        .view-more-btn {
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .view-more-btn:hover {
+            background-color: #2980b9;
+        }
+        .case-studies-section {
+            margin-top: 80px;
+        }
+        .case-study-card {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 30px;
+            flex-direction: row;
+        }
+        .case-study-image {
+            flex: 1;
+            min-width: 300px;
+            background-color: #e2e8f0;
+        }
+        .case-study-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .case-study-content {
+            flex: 2;
+            padding: 30px;
+        }
+        .case-study-category {
+            display: inline-block;
+            background-color: #ebf8ff;
+            color: #3182ce;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+        .case-study-title {
+            color: #2d3748;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .case-study-stats {
+            display: flex;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stat-item {
+            flex: 1;
+            min-width: 120px;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #718096;
+        }
+        .case-study-desc {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .read-more-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+        }
+        .read-more-link:hover {
+            text-decoration: underline;
+        }
+        .read-more-link .arrow {
+            margin-left: 5px;
+        }
+        @media (max-width: 768px) {
+            .case-study-card {
+                flex-direction: column;
+            }
+            .case-study-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="testimonials-container">
+            <div class="section-header">
+                <h2>What Our Clients Say</h2>
+                <p>Discover why businesses across Southeast Asia trust Softlink for their logistics and supply chain needs</p>
+            </div>
+            
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="filterTestimonials('all')">All Industries</button>
+                <button class="tab-btn" onclick="filterTestimonials('ecommerce')">E-Commerce</button>
+                <button class="tab-btn" onclick="filterTestimonials('manufacturing')">Manufacturing</button>
+                <button class="tab-btn" onclick="filterTestimonials('retail')">Retail</button>
+            </div>
+            
+            <div class="testimonial-grid" id="testimonial-grid">
+                <div class="testimonial-card" data-category="ecommerce">
+                    <div class="quote-icon">"</div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">Softlink has transformed our e-commerce logistics. Their real-time tracking system has reduced our customer service inquiries by 35% and improved our delivery accuracy to 99.8%. The dashboard is intuitive and provides all the analytics we need.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="Sarah Chen">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Sarah Chen</div>
+                            <div class="author-company">Operations Director, GreenCart</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" data-category="manufacturing">
+                    <div class="quote-icon">"</div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">As a manufacturing company with complex supply chain needs, Softlink's solution has been a game-changer. We've reduced delivery times by 22% and cut logistics costs by 18% in just six months. Their customer support is also exceptional.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="Raj Patel">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Raj Patel</div>
+                            <div class="author-company">Supply Chain Manager, TexPro Industries</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" data-category="retail">
+                    <div class="quote-icon">"</div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">Our retail chain has been using Softlink for over a year now, and the improvement in our logistics efficiency is remarkable. The cost calculator is incredibly accurate, and the real-time tracking has improved our inventory management substantially.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="Lisa Wong">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Lisa Wong</div>
+                            <div class="author-company">Logistics Director, StyleMax Retail</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" data-category="ecommerce">
+                    <div class="quote-icon">"</div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">The visibility that Softlink provides into our supply chain has been invaluable. We can now provide accurate delivery estimates to our customers, which has increased our customer satisfaction scores by 27% in just three months.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="David Lim">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">David Lim</div>
+                            <div class="author-company">CEO, TechGadgets Online</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" data-category="manufacturing">
+                    <div class="quote-icon">"</div>
+                    <div class="testimonial-rating">★★★★☆</div>
+                    <p class="testimonial-text">Softlink's platform helped us streamline our cross-border shipping operations. Their customs documentation feature alone has saved us countless hours of manual work and reduced delays at customs checkpoints by 40%.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="Michael Tan">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Michael Tan</div>
+                            <div class="author-company">Logistics Manager, GlobalMech</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card" data-category="retail">
+                    <div class="quote-icon">"</div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p class="testimonial-text">The implementation of Softlink's solution was smooth and their team was supportive throughout the process. The system is now essential to our daily operations, helping us manage deliveries to over 50 retail locations with remarkable efficiency.</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="/api/placeholder/50/50" alt="Aisha Rahman">
+                        </div>
+                        <div class="author-info">
+                            <div class="author-name">Aisha Rahman</div>
+                            <div class="author-company">COO, FashionPlus</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#" class="view-more-btn">View More Testimonials</a>
+            
+            <div class="case-studies-section">
+                <div class="section-header">
+                    <h2>Client Success Stories</h2>
+                    <p>Explore how our services have transformed businesses across the region</p>
+                </div>
+                
+                <div class="case-study-card">
+                    <div class="case-study-image">
+                        <img src="https://pbs.twimg.com/media/GbxuYm8WYAIV4pX.jpg:large" height="100px" alt="GreenCart Case Study">
+                    </div>
+                    <div class="case-study-content">
+                        <div class="case-study-category">E-Commerce</div>
+                        <h3 class="case-study-title">How GreenCart Optimized Last-Mile Delivery with Softlink</h3>
+                        
+                        <div class="case-study-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">35%</div>
+                                <div class="stat-label">Reduction in Delivery Inquiries</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">99.8%</div>
+                                <div class="stat-label">Delivery Accuracy</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">28%</div>
+                                <div class="stat-label">Increase in Customer Satisfaction</div>
+                            </div>
+                        </div>
+                        
+                        <p class="case-study-desc">GreenCart, a leading online grocery platform in Singapore, faced challenges with last-mile delivery transparency and customer communication. Learn how Softlink's real-time tracking system and automated notifications transformed their operations and customer experience.</p>
+                        
+                        <a href="#" class="read-more-link">Read Full Case Study <span class="arrow">→</span></a>
+                    </div>
+                </div>
+                
+                <div class="case-study-card">
+                    <div class="case-study-image">
+                        <img src="https://static.fibre2fashion.com/newsresource/images/272/texpro-tt-launch-710x450_284050.jpg" alt="TexPro Industries Case Study">
+                    </div>
+                    <div class="case-study-content">
+                        <div class="case-study-category">Manufacturing</div>
+                        <h3 class="case-study-title">TexPro Industries: Streamlining Complex Supply Chain Operations</h3>
+                        
+                        <div class="case-study-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">22%</div>
+                                <div class="stat-label">Reduced Delivery Times</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">18%</div>
+                                <div class="stat-label">Cost Savings</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">3x</div>
+                                <div class="stat-label">Improved Visibility</div>
+                            </div>
+                        </div>
+                        
+                        <p class="case-study-desc">TexPro Industries, a textile manufacturer with operations across Southeast Asia, needed a solution to manage their complex multi-country supply chain. Discover how Softlink's integrated platform helped them optimize routes, reduce costs, and improve delivery reliability.</p>
+                        
+                        <a href="#" class="read-more-link">Read Full Case Study <span class="arrow">→</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function filterTestimonials(category) {
+            // Update active button
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+                if (button.textContent.toLowerCase().includes(category) || 
+                    (category === 'all' && button.textContent.includes('All'))) {
+                    button.classList.add('active');
+                }
+            });
+            
+            // Filter testimonials
+            const testimonials = document.querySelectorAll('.testimonial-card');
+            testimonials.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

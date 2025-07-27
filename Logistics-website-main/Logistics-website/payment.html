@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIVAS Payment Gateway</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #F4F6F9;
+            color: #333;
+            text-align: center;
+        }
+
+        .payment-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #1E3A5F;
+            margin-bottom: 20px;
+        }
+
+        .dropdown, .input-field {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .submit-btn {
+            background: #1E3A5F;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #16324E;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="payment-container">
+        <h2>💳 Secure Payment</h2>
+        <p id="amount">Total Amount: </p>
+
+        <!-- Step 1: Choose Payment Method -->
+        <div id="payment-step-1">
+            <label for="payment-method">Choose Payment Method:</label>
+            <select id="payment-method" class="dropdown" onchange="showPaymentDetails()">
+                <option value="">Select a Payment Method</option>
+                <option value="card">💳 Credit/Debit Card</option>
+                <option value="upi">📱 UPI (India)</option>
+                <option value="paypal">🌍 PayPal</option>
+                <option value="netbanking">🏦 Net Banking</option>
+                <option value="gpay">🏧 Google Pay</option>
+                <option value="applepay">🍏 Apple Pay</option>
+                <option value="amazonpay">🛒 Amazon Pay</option>
+                <option value="crypto">💰 Cryptocurrency</option>
+            </select>
+
+            <button class="submit-btn" onclick="proceedToDetails()">Proceed to Pay</button>
+        </div>
+
+        <!-- Step 2: Enter Payment Details -->
+        <div id="payment-step-2" class="hidden">
+            <h3>Enter Payment Details</h3>
+
+            <div id="card-details" class="hidden">
+                <input type="text" class="input-field" placeholder="Cardholder Name">
+                <input type="text" class="input-field" placeholder="Card Number">
+                <input type="text" class="input-field" placeholder="Expiry Date (MM/YY)">
+                <input type="text" class="input-field" placeholder="CVV">
+            </div>
+
+            <div id="upi-details" class="hidden">
+                <input type="text" class="input-field" placeholder="Enter UPI ID (example@upi)">
+            </div>
+
+            <div id="paypal-details" class="hidden">
+                <input type="email" class="input-field" placeholder="Enter PayPal Email">
+            </div>
+
+            <div id="netbanking-details" class="hidden">
+                <select class="dropdown">
+                    <option value="">Select Your Bank</option>
+                    <option value="hdfc">HDFC Bank</option>
+                    <option value="sbi">State Bank of India</option>
+                    <option value="icici">ICICI Bank</option>
+                    <option value="axis">Axis Bank</option>
+                    <option value="citi">Citi Bank</option>
+                </select>
+            </div>
+
+            <div id="gpay-details" class="hidden">
+                <p>Use your Google Pay App to complete the transaction.</p>
+            </div>
+
+            <div id="applepay-details" class="hidden">
+                <p>Use Apple Pay on your Apple device to proceed.</p>
+            </div>
+
+            <div id="amazonpay-details" class="hidden">
+                <p>Amazon Pay will open in a new window for secure payment.</p>
+            </div>
+
+            <div id="crypto-details" class="hidden">
+                <select class="dropdown">
+                    <option value="btc">Bitcoin (BTC)</option>
+                    <option value="eth">Ethereum (ETH)</option>
+                    <option value="usdt">USDT (Tether)</option>
+                </select>
+                <input type="text" class="input-field" placeholder="Enter Wallet Address">
+            </div>
+
+            <button class="submit-btn" onclick="confirmPayment()">Confirm & Pay</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("amount").innerText = "Total Amount: $" + new URLSearchParams(window.location.search).get("amount");
+
+        function proceedToDetails() {
+            let method = document.getElementById("payment-method").value;
+            if (!method) {
+                alert("Please select a payment method.");
+                return;
+            }
+            document.getElementById("payment-step-1").classList.add("hidden");
+            document.getElementById("payment-step-2").classList.remove("hidden");
+            showPaymentDetails();
+        }
+
+        function showPaymentDetails() {
+            let method = document.getElementById("payment-method").value;
+            let paymentOptions = ["card", "upi", "paypal", "netbanking", "gpay", "applepay", "amazonpay", "crypto"];
+            paymentOptions.forEach(option => {
+                document.getElementById(option + "-details").classList.add("hidden");
+            });
+            if (method) {
+                document.getElementById(method + "-details").classList.remove("hidden");
+            }
+        }
+
+        function confirmPayment() {
+            let amount = new URLSearchParams(window.location.search).get("amount");
+            let method = document.getElementById("payment-method").value;
+            let transactionId = "TXN" + Math.floor(Math.random() * 1000000000);
+            let date = new Date().toLocaleString();
+
+            window.location.href = `reciept.html?amount=${amount}&method=${method}&txn=${transactionId}&date=${encodeURIComponent(date)}`;
+        }
+    </script>
+
+</body>
+</html>

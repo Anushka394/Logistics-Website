@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - PIVAS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: #F4F6F9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        
+        .login-container h1 {
+            color: #1E3A5F;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #1E3A5F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background: #FFD700;
+            color: #1E3A5F;
+        }
+        
+        /* Dashboard selection container */
+        .dashboard-selection {
+            display: none;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        
+        .dashboard-selection h1 {
+            color: #1E3A5F;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard-btn i {
+            font-size: 24px;
+        }
+        
+        .logout-btn {
+            margin-top: 30px;
+            background: #f44336;
+        }
+        
+        .logout-btn:hover {
+            background: #d32f2f;
+            color: white;
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Container -->
+    <div class="login-container" id="login-container">
+        <h1>Admin Login</h1>
+        <form id="admin-login-form">
+            <div class="input-group">
+                <label for="admin-username">Username</label>
+                <input type="text" id="admin-username" name="admin-username" required>
+            </div>
+            <div class="input-group">
+                <label for="admin-password">Password</label>
+                <input type="password" id="admin-password" name="admin-password" required>
+            </div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+    
+    <!-- Dashboard Selection Container -->
+    <div class="dashboard-selection" id="dashboard-selection">
+        <h1>PIVAS Admin Dashboards</h1>
+        <p>Select a dashboard to download:</p>
+        <div style="margin-top: 30px;">
+            <a href="dashboard1.pbix" download class="btn dashboard-btn">
+                <i class="fas fa-chart-line"></i> Operations Dashboard
+            </a>
+            <a href="dashboard2.pbix" download class="btn dashboard-btn">
+                <i class="fas fa-chart-pie"></i> Analytics Dashboard
+            </a>
+        </div>
+        <button id="logout-btn" class="btn logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+    
+    <script>
+        document.getElementById("admin-login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("admin-username").value;
+            const password = document.getElementById("admin-password").value;
+            
+            if (username === "admin" && password === "password123") {
+                // Hide login container and show dashboard selection
+                document.getElementById("login-container").style.display = "none";
+                document.getElementById("dashboard-selection").style.display = "block";
+            } else {
+                alert("Invalid username or password");
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById("logout-btn").addEventListener("click", function() {
+            // Show login container and hide dashboard selection
+            document.getElementById("login-container").style.display = "block";
+            document.getElementById("dashboard-selection").style.display = "none";
+            
+            // Clear form fields
+            document.getElementById("admin-username").value = "";
+            document.getElementById("admin-password").value = "";
+        });
+    </script>
+</body>
+</html>

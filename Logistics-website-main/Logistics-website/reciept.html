@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Receipt</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #F4F6F9;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .receipt-container {
+            max-width: 450px;
+            background: white;
+            padding: 20px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1E3A5F;
+        }
+
+        .receipt-details {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: #f9f9f9;
+            font-size: 16px;
+        }
+
+        .detail-item {
+            margin: 10px 0;
+        }
+
+        .bold {
+            font-weight: bold;
+            color: #1E3A5F;
+        }
+
+        #qrcode {
+            text-align: center;
+            margin: 15px auto;
+        }
+
+        .btn {
+            background: #1E3A5F;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 15px auto;
+        }
+
+        .btn:hover {
+            background: #16324E;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="receipt-container">
+        <h2>✅ Payment Successful</h2>
+
+        <div class="receipt-details">
+            <p class="detail-item"><span class="bold">Transaction ID:</span> <span id="txn"></span></p>
+            <p class="detail-item"><span class="bold">User Name:</span> <span id="user"></span></p>
+            <p class="detail-item"><span class="bold">Email:</span> <span id="email"></span></p>
+            <p class="detail-item"><span class="bold">Contact No:</span> <span id="contact"></span></p>
+            <p class="detail-item"><span class="bold">Payment Method:</span> <span id="method"></span></p>
+            <p class="detail-item"><span class="bold">Amount Paid:</span> $<span id="amount"></span></p>
+            <p class="detail-item"><span class="bold">Date & Time:</span> <span id="date"></span></p>
+        </div>
+
+        <div id="qrcode"></div>
+
+        <button class="btn" onclick="downloadReceipt()">📥 Download Receipt</button>
+    </div>
+
+    <script>
+        // Function to generate a random transaction ID
+        function generateTransactionID() {
+            return 'TXN' + Math.floor(Math.random() * 1000000000);
+        }
+
+        // Retrieve Payment Details from URL
+        let params = new URLSearchParams(window.location.search);
+        let txnId = generateTransactionID(); // Auto-generate transaction ID
+        let userName = params.get("user");
+        let email = params.get("email");
+        let contact = params.get("contact");
+        let method = params.get("method");
+        let amount = params.get("amount");
+        let date = new Date().toLocaleString(); // Get current date & time
+
+        // Set values in receipt
+        document.getElementById("txn").innerText = txnId;
+        document.getElementById("user").innerText = userName;
+        document.getElementById("email").innerText = email;
+        document.getElementById("contact").innerText = contact;
+        document.getElementById("method").innerText = method;
+        document.getElementById("amount").innerText = amount;
+        document.getElementById("date").innerText = date;
+
+        // Generate QR Code with Transaction Details
+        let qrData = `Transaction ID: ${txnId}
+User: ${userName}
+Email: ${email}
+Contact No: ${contact}
+Payment Method: ${method}
+Amount Paid: $${amount}
+Date: ${date}`;
+        new QRCode(document.getElementById("qrcode"), {
+            text: qrData,
+            width: 150,
+            height: 150
+        });
+
+        // Download Receipt as Image
+        function downloadReceipt() {
+            let receipt = document.querySelector('.receipt-container');
+            html2canvas(receipt).then(canvas => {
+                let link = document.createElement("a");
+                link.href = canvas.toDataURL("image/png");
+                link.download = "PIVAS_Receipt.png";
+                link.click();
+            });
+        }
+    </script>
+
+    <!-- Add html2canvas for downloading as an image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+</body>
+</html>

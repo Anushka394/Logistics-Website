@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIVAS Subscription</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #F4F6F9;
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .card h2, .card h3 {
+            color: #1E3A5F;
+            margin-bottom: 15px;
+        }
+
+        .benefits {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px solid #1E3A5F;
+        }
+
+        .benefits ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .benefits li {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .card-small {
+            width: 48%;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .input-field, .dropdown {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            background: #1E3A5F;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #16324E;
+        }
+
+        @media (max-width: 768px) {
+            .card-small {
+                width: 100%;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Subscription Benefits -->
+        <div class="card benefits">
+            <h2>🌟 PIVAS Subscription Benefits</h2>
+            <ul>
+                <li>🚀 Faster Parcel Delivery</li>
+                <li>🔄 Real-time Tracking</li>
+                <li>💰 Exclusive Discounts</li>
+                <li>📦 Free Packaging Services</li>
+                <li>🛡️ Insurance Coverage for Valuable Items</li>
+            </ul>
+        </div>
+
+        <div class="card-container">
+            <!-- Subscription Purchase -->
+            <div class="card card-small">
+                <h3>🛒 Buy Subscription</h3>
+                <input type="text" id="name" class="input-field" placeholder="Enter Name" required>
+                <input type="email" id="email" class="input-field" placeholder="Enter Email" required>
+                <input type="text" id="contact" class="input-field" placeholder="Enter Contact No." required>            
+                <select id="country" class="dropdown" onchange="updatePrice()">
+                    <option value="0">Select Country</option>
+                    <option value="50">USA - $50</option>
+                    <option value="45">UK - £45</option>
+                    <option value="40">India - ₹3000</option>
+                    <option value="55">Canada - CAD $55</option>
+                </select>
+
+                <p id="price">Price: Select Your Country</p>
+
+                <button class="submit-btn" onclick="proceedToPayment()">Subscribe Now</button>
+            </div>
+
+            <!-- Existing User Tracking -->
+            <div class="card card-small">
+                <h3>🔍 Already Subscribed? Track Your Parcel</h3>
+                <input type="text" id="userId" class="input-field" placeholder="Enter User ID" required>
+                <input type="password" id="password" class="input-field" placeholder="Enter Password" required>
+                <input type="text" id="trackingRef" class="input-field" placeholder="Enter Tracking ID" required>
+                <input type="text" id="referenceNo" class="input-field" placeholder="Enter Reference Number" required>
+
+                <button class="submit-btn" onclick="trackParcel()">Track Your Parcel</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function updatePrice() {
+            let country = document.getElementById("country");
+            let price = document.getElementById("price");
+            let selectedValue = country.value;
+            price.innerHTML = selectedValue === "0" ? "Price: --" : "Price: $" + selectedValue;
+        }
+
+        function proceedToPayment() {
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let contact = document.getElementById("contact").value;
+            let country = document.getElementById("country").value;
+
+            if (!name || !email || !contact || country === "0") {
+                alert("Please fill all details and select a country.");
+                return;
+            }
+
+            window.location.href = `payment.html?name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&contact=${encodeURIComponent(contact)}&amount=${country}`;
+        }
+
+        function trackParcel() {
+            let userId = document.getElementById("userId").value;
+            let password = document.getElementById("password").value;
+            let trackingRef = document.getElementById("trackingRef").value;
+            let referenceNo = document.getElementById("referenceNo").value;
+
+            if (!userId || !password || !trackingRef || !referenceNo) {
+                alert("Please fill all fields to track your order.");
+                return;
+            }
+
+            window.location.href = `track.html?ref=${encodeURIComponent(trackingRef)}`;
+        }
+    </script>
+
+</body>
+</html>

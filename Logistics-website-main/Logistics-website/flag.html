@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcel Validation System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-center mb-4">📦 Parcel Compliance Checker</h2>
+        
+        <!-- Input Form -->
+        <div class="mb-4">
+            <label class="block text-gray-700">Destination Country:</label>
+            <input type="text" id="countryInput" class="w-full p-2 border rounded" placeholder="Enter country">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Item Name:</label>
+            <input type="text" id="itemInput" class="w-full p-2 border rounded" placeholder="Enter item">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700">Declared Value (₹):</label>
+            <input type="number" id="valueInput" class="w-full p-2 border rounded" placeholder="Enter value in Rupees">
+        </div>
+        <button onclick="validateParcel()" class="mt-2 px-4 py-2 bg-blue-500 text-white rounded">Check Compliance</button>
+
+        <!-- Result Section -->
+        <div id="resultSection" class="hidden mt-4 p-4 border rounded bg-gray-50">
+            <h3 class="text-lg font-semibold">Validation Result:</h3>
+            <p id="statusText" class="mt-2"></p>
+            <p id="issueDetails" class="text-red-600"></p>
+        </div>
+    </div>
+
+    <script>
+        // Restricted items based on real-world data (case insensitive matching)
+        const restrictedItems = {
+            "afghanistan": ["lab test results", "bottled water"],
+            "aland islands": ["leather belt", "x-ray images", "jbl flip 5"],
+            "albania": ["sports bras", "trading cards"],
+            "american samoa": ["balsamic vinegar", "dairy-free yogurt", "real estate licenses"],
+            "andorra": ["insurance policies", "tile mate"]
+        };
+
+        const valueLimits = {
+            "usa": 2500,  
+            "germany": 2000,
+            "india": 1500,
+            "afghanistan": 1000,
+            "aland islands": 500
+        };
+
+        const thresholdRupees = 20000; // Threshold in INR
+        const exchangeRate = 83; // USD to INR conversion rate (example rate)
+
+        function validateParcel() {
+            let country = document.getElementById("countryInput").value.trim().toLowerCase();
+            let item = document.getElementById("itemInput").value.trim().toLowerCase();
+            let valueUSD = parseFloat(document.getElementById("valueInput").value);
+            let valueINR = valueUSD * exchangeRate;
+            let resultSection = document.getElementById("resultSection");
+            let statusText = document.getElementById("statusText");
+            let issueDetails = document.getElementById("issueDetails");
+            let issues = [];
+
+            // Ensure case-insensitive matching for items
+            let restrictedList = (restrictedItems[country] || []).map(i => i.toLowerCase());
+
+            // Check for restricted items
+            if (restrictedList.includes(item)) {
+                issues.push(`❌ ${item} is restricted in ${country}. Please remove it.`);
+            }
+
+            // Check for declared value limits
+            if (valueLimits[country] && valueUSD > valueLimits[country]) {
+                issues.push(`💰 Declared value exceeds ${valueLimits[country]} USD. Attach extra documentation.`);
+            }
+
+            // Check if value in INR exceeds threshold
+            if (valueINR > thresholdRupees) {
+                issues.push(`⚠ Declared value in INR exceeds ₹${thresholdRupees}. Attach extra documentation.`);
+            }
+
+            if (issues.length > 0) {
+                statusText.innerHTML = "🚨 Flagged - Issue Found";
+                issueDetails.innerHTML = issues.join("<br>");
+            } else {
+                statusText.innerHTML = "✅ Compliant - No Issues";
+                issueDetails.innerHTML = "";
+            }
+            
+            resultSection.classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>

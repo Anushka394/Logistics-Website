@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIVAS Support Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #F4F6F9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .support-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 600px;
+            position: relative;
+        }
+
+        .support-container h1 {
+            color: #1E3A5F;
+            margin-bottom: 20px;
+        }
+
+        .support-container p {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .company-image {
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1E3A5F;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: left;
+        }
+
+        .chatbot-container h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .chatbot-messages {
+            background: white;
+            color: black;
+            padding: 10px;
+            border-radius: 8px;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .chatbot-input {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="support-container">
+        <h1>Welcome to PIVAS Support Services</h1>
+        <p>At PIVAS, we prioritize customer satisfaction by offering round-the-clock support services. Our dedicated team is here to assist you with parcel tracking, login issues, and order management. Whether you need help accessing your parcel details or have queries regarding our logistics services, we ensure prompt and efficient support.</p>
+        <img src="pivas-company.jpeg" alt="PIVAS Company" class="company-image">
+    </div>
+
+    <div class="chatbot-container">
+        <h3>VISHWAS - Your Virtual Assistant</h3>
+        <div class="chatbot-messages" id="chatbotMessages">Hello! How can I assist you today?</div>
+        <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your message..." onkeypress="handleChat(event)">
+    </div>
+
+    <script>
+        function handleChat(event) {
+            if (event.key === 'Enter') {
+                let inputField = document.getElementById("chatbotInput");
+                let userMessage = inputField.value.trim();
+                if (userMessage === "") return;
+                
+                let chatBox = document.getElementById("chatbotMessages");
+                chatBox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
+                
+                setTimeout(() => {
+                    let botResponse = getBotResponse(userMessage);
+                    chatBox.innerHTML += `<p><strong>VISHWAS:</strong> ${botResponse}</p>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 1000);
+                
+                inputField.value = "";
+            }
+        }
+
+        function getBotResponse(message) {
+            message = message.toLowerCase();
+
+            if (message.includes("track")) {
+                return "You can track your parcel using the tracking ID on the <a href='track.html' style='color: yellow;'>tracking page</a>.";
+            } else if (message.includes("shipment") || message.includes("shipping")) {
+                return "Please provide the shipment ID, and I'll check the status for you.";
+            } else if (message.includes("status")) {
+                return "Enter your tracking ID to view the current status of your shipment.";
+            } else if (message.includes("delivery")) {
+                return "Deliveries usually take 3-5 business days. Check your exact timeline using the tracking page.";
+            } else if (message.includes("cancel shipment")) {
+                return "To cancel a shipment, please visit your account's order history and select 'Cancel'.";
+            } else if (message.includes("login")) {
+                return "For login issues, please ensure you have the correct credentials. If you forgot your password, reset it on the login page.";
+            } else if (message.includes("parcel")) {
+                return "You can check the estimated delivery time and parcel status on the tracking page.";
+            } else if (message.includes("restricted items") || message.includes("prohibited items")) {
+                return "Certain items are restricted for shipping to various countries. Please check our <a href='restricted-items.html' style='color: yellow;'>Restricted Items List</a>.";
+            } else if (message.includes("customs") || message.includes("duties")) {
+                return "Customs duties depend on the destination country. You can view the estimated charges on the shipment details page.";
+            } else if (message.includes("payment")) {
+                return "We accept all major credit cards, PayPal, and bank transfers. Select your preferred method at checkout.";
+            } else if (message.includes("fees") || message.includes("charges")) {
+                return "Shipping charges depend on the parcel's weight, size, and destination. Calculate your cost at checkout.";
+            } else if (message.includes("taxes")) {
+                return "Taxes are calculated based on your country's import/export rules.";
+            } else if (message.includes("refund")) {
+                return "Refunds are processed within 7-10 business days after cancellation.";
+            } else if (message.includes("contact") || message.includes("support")) {
+                return "You can contact us via email at support@logithon.com or through our <a href='contact.html' style='color: yellow;'>Contact Page</a>.";
+            } else if (message.includes("help")) {
+                return "I'm here to assist you! You can ask me about shipment tracking, login issues, or parcel restrictions.";
+            } else if (message.includes("about")) {
+                return "We at PIVAS aim to simplify cross-border shipments with real-time compliance checks.";
+            } else if (message.includes("services")) {
+                return "Our services include parcel tracking, compliance checking, and hassle-free international shipping.";
+            } else {
+                return "I'm here to assist you with parcel tracking, courier details, and login issues. How can I help?";
+            }
+        }
+    </script>
+</body>
+</html>
