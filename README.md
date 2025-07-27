@@ -18,7 +18,8 @@ Features
 
 Future Improvements
 
-Add backend functionality for the contact form
+-Add backend functionality for the contact form
+
 -Integrate Google Maps for location section
 
 -Make the design more accessible and SEO-friendly
