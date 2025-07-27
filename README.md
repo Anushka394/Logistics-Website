@@ -1,5 +1,4 @@
-Logistics Website
-This is a responsive logistics company website built using HTML, CSS, and JavaScript. It is designed to provide a clean, modern interface for businesses in the logistics and transport industry.
+Logistics Website is a responsive logistics company website built using HTML, CSS, and JavaScript. It is designed to provide a clean, modern interface for businesses in the logistics and transport industry.
 
 Features
 Responsive landing page layout
