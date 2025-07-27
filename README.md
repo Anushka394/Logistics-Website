@@ -2,22 +2,23 @@ Logistics Website is a responsive logistics company website built using HTML, CS
 
 Features
 
-Responsive landing page layout
+-Responsive landing page layout
 
-Navigation bar with internal links
+-Navigation bar with internal links
 
-Interactive sections such as About, Services, and Contact
+-Interactive sections such as About, Services, and Contact
 
-Custom animations and smooth scrolling
+-Custom animations and smooth scrolling
 
-Modern and minimal design using CSS
+-Modern and minimal design using CSS
 
-Static frontend only (no backend or database)
+-Static frontend only (no backend or database)
 
-No external libraries or servers are required to run the project. It is fully static and client-side only.
+-No external libraries or servers are required to run the project. It is fully static and client-side only.
 
 Future Improvements
 
 Add backend functionality for the contact form
-Integrate Google Maps for location section
-Make the design more accessible and SEO-friendly
+-Integrate Google Maps for location section
+
+-Make the design more accessible and SEO-friendly
